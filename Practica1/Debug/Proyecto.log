@@ -1,0 +1,11 @@
+﻿  main.cpp
+c:\users\afolch\desktop\practica1\src\main.cpp(89): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\afolch\desktop\practica1\src\main.cpp(90): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\afolch\desktop\practica1\src\main.cpp(95): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\afolch\desktop\practica1\src\main.cpp(96): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\afolch\desktop\practica1\src\main.cpp(98): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\afolch\desktop\practica1\src\main.cpp(99): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\afolch\desktop\practica1\src\main.cpp(105): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\afolch\desktop\practica1\src\main.cpp(215): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+  Proyecto.vcxproj -> C:\Users\afolch\Desktop\Practica1\Debug\Practica1.exe
+  Proyecto.vcxproj -> C:\Users\afolch\Desktop\Practica1\Debug\Practica1.pdb (Full PDB)
