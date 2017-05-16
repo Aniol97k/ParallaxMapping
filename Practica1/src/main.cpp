@@ -10,6 +10,7 @@
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
 
+//Instantiate with Release x86!
 
 //Key detection functions
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
