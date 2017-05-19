@@ -17,6 +17,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void do_movement();
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+void RenderQuad();
 
 //Variables
 const GLuint WIDTH = 800;
@@ -99,6 +100,29 @@ void do_movement() {
 
 }
 
+GLuint loadTexture(GLchar* path)
+{
+	//Generate texture ID and load texture data 
+	GLuint textureID;
+	glGenTextures(1, &textureID);
+	int width, height;
+	unsigned char* image = SOIL_load_image(path, &width, &height, 0, SOIL_LOAD_RGB);
+	// Assign texture to ID
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	// Parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	SOIL_free_image_data(image);
+	return textureID;
+}
+
+
 //Function that detects whenever a mouse button is pressed and the coordenates of the mouse
 void mouse_callback(GLFWwindow* window, double xpos, double ypos){
 
@@ -163,6 +187,21 @@ int main(){
 	//Object PointLight2 = Object(scalePoint2, rotationPoint2, positionPoint2, Object::cube);
 	//Object SpotLight = Object(scaleSpot, rotationSpot, positionSpot, Object::cube);
 
+	Shader shader("./src/parallax_mapping.vertexshader", "./src/parallax_mapping.fragmentshader");
+
+	glm::vec3 lightPos(0.5f, 1.0f, 0.3f);
+
+	// Load textures
+	GLuint diffuseMap = loadTexture("./src/bricks.jpg");
+	GLuint normalMap = loadTexture("./src/bricks_normal.jpg");
+	GLuint heightMap = loadTexture("./src/bricks_disp.jpg");
+
+	// Set texture units 
+	shader.USE();
+	glUniform1i(glGetUniformLocation(shader.Program, "diffuseMap"), 0);
+	glUniform1i(glGetUniformLocation(shader.Program, "normalMap"), 1);
+	glUniform1i(glGetUniformLocation(shader.Program, "depthMap"), 2);
+
 	while (!glfwWindowShouldClose(window)){
 
 		//Deltatime calculation for each frame
@@ -199,6 +238,28 @@ int main(){
 		glUniform3f(objectColorLoc, 1.0f, 0.8f, 0.6f);
 		glUniform3f(lightColorLoc, 0.8f, 0.2f, 0.2f);
 		glUniform3f(viewPosLoc, camPosition.x, camPosition.y, camPosition.z);
+
+		// Configure view/projection matrices
+		shader.USE();
+		glm::mat4 viewP = camera.GetViewMatrix();
+		glm::mat4 projectionP = glm::perspective(camera.Zoom, (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
+		glUniformMatrix4fv(glGetUniformLocation(shader.Program, "view"), 1, GL_FALSE, glm::value_ptr(viewP));
+		glUniformMatrix4fv(glGetUniformLocation(shader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projectionP));
+		//Render normal-mapped quad
+		glm::mat4 model;
+		//	model = glm::rotate(model, (GLfloat)glfwGetTime() * 0, glm::normalize(glm::vec3(1.0, 0.0, 1.0))); // Rotates the quad to show parallax mapping works in all directions
+		glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(glGetUniformLocation(shader.Program, "lightPos"), 1, &lightPos[0]);
+		glUniform3fv(glGetUniformLocation(shader.Program, "viewPos"), 1, &camera.Position[0]);
+		glUniform1f(glGetUniformLocation(shader.Program, "height_scale"),0.05f);
+		glUniform1i(glGetUniformLocation(shader.Program, "parallax"), true);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, diffuseMap);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, normalMap);
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, heightMap);
+		RenderQuad();
 
 		// Set material properties
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "material.shininess"), 32.0f);
@@ -242,8 +303,7 @@ int main(){
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.outerCutOff"), glm::cos(glm::radians(15.0f)));
 
 		//Camera transformations
-		glm::mat4 view;
-		view = camera.GetViewMatrix();
+		glm::mat4 view = camera.GetViewMatrix();
 		glm::mat4 projection = glm::perspective(camera.Zoom, (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
 
 		//Getting uniform from shaders for the camera
@@ -257,7 +317,7 @@ int main(){
 
 		//Drawing the cube
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(Cube.GetModelMatrix()));
-		Cube.Draw();
+		//Cube.Draw();
 
 		//Drawing the point light 1
 		PointShader.USE();
@@ -318,5 +378,98 @@ int main(){
 	glfwTerminate();
 	return 0;
 }
+
+GLuint quadVAO = 0;
+GLuint quadVBO;
+void RenderQuad()
+{
+	if (quadVAO == 0)
+	{
+		// positions
+		glm::vec3 pos1(-1.0, 1.0, 0.0);
+		glm::vec3 pos2(-1.0, -1.0, 0.0);
+		glm::vec3 pos3(1.0, -1.0, 0.0);
+		glm::vec3 pos4(1.0, 1.0, 0.0);
+		// texture coordinates
+		glm::vec2 uv1(0.0, 1.0);
+		glm::vec2 uv2(0.0, 0.0);
+		glm::vec2 uv3(1.0, 0.0);
+		glm::vec2 uv4(1.0, 1.0);
+		// normal vector
+		glm::vec3 nm(0.0, 0.0, 1.0);
+
+		// calculate tangent/bitangent vectors of both triangles
+		glm::vec3 tangent1, bitangent1;
+		glm::vec3 tangent2, bitangent2;
+		// - triangle 1
+		glm::vec3 edge1 = pos2 - pos1;
+		glm::vec3 edge2 = pos3 - pos1;
+		glm::vec2 deltaUV1 = uv2 - uv1;
+		glm::vec2 deltaUV2 = uv3 - uv1;
+
+		GLfloat f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+
+		tangent1.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
+		tangent1.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
+		tangent1.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
+		tangent1 = glm::normalize(tangent1);
+
+		bitangent1.x = f * (-deltaUV2.x * edge1.x + deltaUV1.x * edge2.x);
+		bitangent1.y = f * (-deltaUV2.x * edge1.y + deltaUV1.x * edge2.y);
+		bitangent1.z = f * (-deltaUV2.x * edge1.z + deltaUV1.x * edge2.z);
+		bitangent1 = glm::normalize(bitangent1);
+
+		// - triangle 2
+		edge1 = pos3 - pos1;
+		edge2 = pos4 - pos1;
+		deltaUV1 = uv3 - uv1;
+		deltaUV2 = uv4 - uv1;
+
+		f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+
+		tangent2.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
+		tangent2.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
+		tangent2.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
+		tangent2 = glm::normalize(tangent2);
+
+
+		bitangent2.x = f * (-deltaUV2.x * edge1.x + deltaUV1.x * edge2.x);
+		bitangent2.y = f * (-deltaUV2.x * edge1.y + deltaUV1.x * edge2.y);
+		bitangent2.z = f * (-deltaUV2.x * edge1.z + deltaUV1.x * edge2.z);
+		bitangent2 = glm::normalize(bitangent2);
+
+
+		GLfloat quadVertices[] = {
+			// Positions            // normal         // TexCoords  // Tangent                          // Bitangent
+			pos1.x, pos1.y, pos1.z, nm.x, nm.y, nm.z, uv1.x, uv1.y, tangent1.x, tangent1.y, tangent1.z, bitangent1.x, bitangent1.y, bitangent1.z,
+			pos2.x, pos2.y, pos2.z, nm.x, nm.y, nm.z, uv2.x, uv2.y, tangent1.x, tangent1.y, tangent1.z, bitangent1.x, bitangent1.y, bitangent1.z,
+			pos3.x, pos3.y, pos3.z, nm.x, nm.y, nm.z, uv3.x, uv3.y, tangent1.x, tangent1.y, tangent1.z, bitangent1.x, bitangent1.y, bitangent1.z,
+
+			pos1.x, pos1.y, pos1.z, nm.x, nm.y, nm.z, uv1.x, uv1.y, tangent2.x, tangent2.y, tangent2.z, bitangent2.x, bitangent2.y, bitangent2.z,
+			pos3.x, pos3.y, pos3.z, nm.x, nm.y, nm.z, uv3.x, uv3.y, tangent2.x, tangent2.y, tangent2.z, bitangent2.x, bitangent2.y, bitangent2.z,
+			pos4.x, pos4.y, pos4.z, nm.x, nm.y, nm.z, uv4.x, uv4.y, tangent2.x, tangent2.y, tangent2.z, bitangent2.x, bitangent2.y, bitangent2.z
+		};
+		// Setup plane VAO
+		glGenVertexArrays(1, &quadVAO);
+		glGenBuffers(1, &quadVBO);
+		glBindVertexArray(quadVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 14 * sizeof(GLfloat), (GLvoid*)0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 14 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 14 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 14 * sizeof(GLfloat), (GLvoid*)(8 * sizeof(GLfloat)));
+		glEnableVertexAttribArray(4);
+		glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 14 * sizeof(GLfloat), (GLvoid*)(11 * sizeof(GLfloat)));
+	}
+	glBindVertexArray(quadVAO);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glBindVertexArray(0);
+}
+
 	
 
