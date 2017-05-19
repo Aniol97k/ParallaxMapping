@@ -9,15 +9,13 @@ src\main.cpp(123): warning C4244: 'argument': conversion from 'double' to 'GLflo
 src\main.cpp(169): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
 src\main.cpp(219): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 src\main.cpp(220): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-src\main.cpp(228): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-src\main.cpp(229): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 src\main.cpp(239): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 src\main.cpp(240): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 libSOIL.lib(SOIL.obj) : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:ICF' specification
 LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
 LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  1 of 290 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+  3 of 298 functions ( 1.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
@@ -46,9 +44,10 @@ Shader.obj : warning LNK4049: locally defined symbol ___glewCreateShader importe
 Shader.obj : warning LNK4049: locally defined symbol ___glewCompileShader imported
 Shader.obj : warning LNK4049: locally defined symbol ___glewGetShaderiv imported
 Shader.obj : warning LNK4049: locally defined symbol ___glewUseProgram imported
-libSOIL.lib(image_DXT.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'libSOIL.lib(image_DXT.obj)' or at 'C:\Users\Marc\Documents\ParallaxMapping\Practica1\Release\SOIL.pdb'; linking object as if no debug info
-libSOIL.lib(image_helper.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'libSOIL.lib(image_helper.obj)' or at 'C:\Users\Marc\Documents\ParallaxMapping\Practica1\Release\SOIL.pdb'; linking object as if no debug info
-libSOIL.lib(SOIL.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'libSOIL.lib(SOIL.obj)' or at 'C:\Users\Marc\Documents\ParallaxMapping\Practica1\Release\SOIL.pdb'; linking object as if no debug info
-libSOIL.lib(stb_image_aug.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'libSOIL.lib(stb_image_aug.obj)' or at 'C:\Users\Marc\Documents\ParallaxMapping\Practica1\Release\SOIL.pdb'; linking object as if no debug info
-glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Users\Marc\Documents\ParallaxMapping\Practica1\Release\vc120.pdb'; linking object as if no debug info
-  Proyecto.vcxproj -> C:\Users\Marc\Documents\ParallaxMapping\Practica1\Release\Practica1.exe
+libSOIL.lib(image_DXT.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'libSOIL.lib(image_DXT.obj)' or at 'C:\Users\afolch\Source\Repos\ParallaxMapping\Practica1\Release\SOIL.pdb'; linking object as if no debug info
+libSOIL.lib(image_helper.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'libSOIL.lib(image_helper.obj)' or at 'C:\Users\afolch\Source\Repos\ParallaxMapping\Practica1\Release\SOIL.pdb'; linking object as if no debug info
+libSOIL.lib(SOIL.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'libSOIL.lib(SOIL.obj)' or at 'C:\Users\afolch\Source\Repos\ParallaxMapping\Practica1\Release\SOIL.pdb'; linking object as if no debug info
+libSOIL.lib(stb_image_aug.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'libSOIL.lib(stb_image_aug.obj)' or at 'C:\Users\afolch\Source\Repos\ParallaxMapping\Practica1\Release\SOIL.pdb'; linking object as if no debug info
+glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Users\afolch\Source\Repos\ParallaxMapping\Practica1\Release\vc120.pdb'; linking object as if no debug info
+  Proyecto.vcxproj -> C:\Users\afolch\Source\Repos\ParallaxMapping\Practica1\Release\Practica1.exe
+  Proyecto.vcxproj -> C:\Users\afolch\Source\Repos\ParallaxMapping\Practica1\Release\Practica1.pdb (Full PDB)

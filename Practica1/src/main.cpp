@@ -120,7 +120,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos){
 }
 
 //Function that detects the mouse scroll to zoom in and out
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) { camera.ProcessMouseScroll(yoffset); }
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) { camera.ProcessMouseScroll(yoffset/8); }
 
 int main(){
 
@@ -154,14 +154,14 @@ int main(){
 	//Shader declaration
 	Shader lightingShader = Shader("./src/multipleLightVertexShader.vertexshader", "./src/multipleLightFragmentShader.fragmentshader");
 	Shader PointShader = Shader("./src/lampVertexShader.vertexshader", "./src/lampFragmentShader.fragmentshader");
-	Shader PointShader2 = Shader("./src/lampVertexShader.vertexshader", "./src/lampFragmentShader.fragmentshader");
+	//Shader PointShader2 = Shader("./src/lampVertexShader.vertexshader", "./src/lampFragmentShader.fragmentshader");
 	Shader SpotShader = Shader("./src/lampVertexShader.vertexshader", "./src/lampFragmentShader.fragmentshader");
 	Object Cube = Object(scaleCube, rotationCube, positionCube, Object::cube);
 	//Object Lamp = Object(scaleLamp, rotationLamp, positionLamp, Object::cube);
 	//Object DirectionalLight = Object(scaleDirectional, rotationDirectional, positionDirectional, Object::cube); no representem amb cub a les directional lights
 	Object PointLight = Object(scalePoint, rotationPoint, positionPoint, Object::cube);
-	Object PointLight2 = Object(scalePoint2, rotationPoint2, positionPoint2, Object::cube);
-	Object SpotLight = Object(scaleSpot, rotationSpot, positionSpot, Object::cube);
+	//Object PointLight2 = Object(scalePoint2, rotationPoint2, positionPoint2, Object::cube);
+	//Object SpotLight = Object(scaleSpot, rotationSpot, positionSpot, Object::cube);
 
 	while (!glfwWindowShouldClose(window)){
 
@@ -219,14 +219,14 @@ int main(){
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[0].linear"), 0.09);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[0].quadratic"), 0.032);
 
-		// Point light 2
+		/* Point light 2
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[1].position"), PointLight2.GetPosition().x, PointLight2.GetPosition().y, PointLight2.GetPosition().z);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[1].ambient"), 0.05f, 0.05f, 0.05f);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[1].diffuse"), 0.8f, 0.8f, 0.8f);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[1].specular"), 1.0f, 1.0f, 1.0f);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[1].constant"), 1.0f);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[1].linear"), 0.09);
-		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[1].quadratic"), 0.032);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[1].quadratic"), 0.032);*/
 		
 		
 		// SpotLight
@@ -276,7 +276,7 @@ int main(){
 		PointLight.Draw();
 
 		//Drawing the point light 2
-		PointShader2.USE();
+		/*PointShader2.USE();
 
 		//Variables and uniform from shaders
 		modelLoc = glGetUniformLocation(PointShader2.Program, "model");
@@ -289,10 +289,10 @@ int main(){
 
 		//Lamp.Draw();
 		//DirectionalLight.Draw();
-		PointLight2.Draw();
+		PointLight2.Draw();*/
 
 		//Drawing the spot light
-		SpotShader.USE();
+		/*SpotShader.USE();
 		modelLoc = glGetUniformLocation(SpotShader.Program, "model");
 		viewLoc = glGetUniformLocation(SpotShader.Program, "view");
 		projLoc = glGetUniformLocation(SpotShader.Program, "projection");
@@ -301,7 +301,7 @@ int main(){
 	
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(SpotLight.GetModelMatrix()));
 
-		SpotLight.Draw();
+		SpotLight.Draw();*/
 
 		//Movement checkers
 		if (controls == 1) { Cube.check_movement(deltaTime); }
