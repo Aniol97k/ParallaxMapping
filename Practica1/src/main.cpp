@@ -29,6 +29,7 @@ GLfloat lastX = WIDTH / 2.0f;
 GLfloat lastY = HEIGHT / 2.0f;
 bool firstMouse = true;
 GLint controls = 1;
+int texture = 2;
 
 //Camera variables to pass to view matrix
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -55,7 +56,7 @@ vec3 positionSpot = vec3(3.0f, 1.5f, -1.0f);
 GLfloat deltaTime = 0.0f;	//Time between current frame and last frame
 GLfloat lastFrame = 0.0f;  	//Time of last frame
 
-int luzSeleccionada = 1;
+int luzSeleccionada = 2;
 
 //Function to detect whenever a key is pressed and which one is it
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode){
@@ -77,17 +78,16 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_2 && action == GLFW_PRESS && controls == 1)
 		controls = 2;*/
 
-	if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
-		luzSeleccionada = 1;
-	}
+	//Light selection
+	if (key == GLFW_KEY_1 && action == GLFW_PRESS) luzSeleccionada = 1;
+	if (key == GLFW_KEY_2 && action == GLFW_PRESS) luzSeleccionada = 2;
+	if (key == GLFW_KEY_3 && action == GLFW_PRESS) luzSeleccionada = 3;
 
-	if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
-		luzSeleccionada = 2;
-	}
-
-	if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
-		luzSeleccionada = 3;
-	}
+	//Texture change
+	if (key == GLFW_KEY_4 && action == GLFW_PRESS) texture = 1;
+	if (key == GLFW_KEY_5 && action == GLFW_PRESS) texture = 2;
+	if (key == GLFW_KEY_6 && action == GLFW_PRESS) texture = 3;
+	
 }
 
 //Function that detects what is pressed and moves the camera alongside user movements
@@ -202,6 +202,14 @@ int main(){
 	GLuint normalMap = loadTexture("./src/bricks_normal.jpg");
 	GLuint heightMap = loadTexture("./src/bricks_disp.jpg");
 
+	GLuint diffuseMap2 = loadTexture("./src/wood.png");
+	GLuint normalMap2 = loadTexture("./src/wood_normal.png");
+	GLuint heightMap2 = loadTexture("./src/wood_relief.png");
+
+	GLuint diffuseMap3 = loadTexture("./src/rockwall.png");
+	GLuint normalMap3 = loadTexture("./src/rockwall_normal.png");
+	GLuint heightMap3 = loadTexture("./src/rockwall_relief.png");
+
 	// Set texture units 
 	shader.USE();
 	glUniform1i(glGetUniformLocation(shader.Program, "diffuseMap"), 0);
@@ -248,11 +256,32 @@ int main(){
 		glUniform1i(glGetUniformLocation(shader.Program, "parallax"), true);
 		glUniform1i(glGetUniformLocation(shader.Program, "luzSeleccionada"), luzSeleccionada);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, diffuseMap);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, normalMap);
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, heightMap);
+
+		switch (texture) {
+
+		case 1:
+			glBindTexture(GL_TEXTURE_2D, diffuseMap);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, normalMap);
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, heightMap);
+			break;
+		case 2:
+			glBindTexture(GL_TEXTURE_2D, diffuseMap2);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, normalMap2);
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, heightMap2);
+			break;
+		case 3:
+			glBindTexture(GL_TEXTURE_2D, diffuseMap3);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, normalMap3);
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, heightMap3);
+			break;
+		}
+
 		RenderQuad();
 
 		// Set material properties
