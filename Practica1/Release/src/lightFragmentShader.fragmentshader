@@ -1,0 +1,34 @@
+#version 330 core
+out vec4 color;
+
+in vec3 FragPos;  
+in vec3 Normal;  
+ 
+//Uniform variables for the light position, the view matrix position of the object, color of the light and color for the object
+uniform vec3 lightPos; 
+uniform vec3 viewPos;
+uniform vec3 lightColor;
+uniform vec3 objectColor;
+
+void main(){
+
+    //Ambient light calculus with tis sumatory
+    float ambientSum = 0.1f;
+    vec3 ambient = ambientSum * lightColor;
+  	
+    //Diffuse light calculus
+    vec3 norm = normalize(Normal); //Normalization of the vector
+    vec3 lightDir = normalize(lightPos - FragPos); //Normalization of the light direction vector
+    float diff = max(dot(norm, lightDir), 0.0); //Diffuse sumatory calculus
+    vec3 diffuse = diff * lightColor; //Final vector for the diffuse light
+    
+    //Specular light calculus
+    float specularSum = 0.5f;
+    vec3 viewDir = normalize(viewPos - FragPos); //Normalization of view direction vector
+    vec3 reflectDir = reflect(-lightDir, norm);  //Normalization of reflection direction vector
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32); //Specualar sumatory calculus
+    vec3 specular = specularSum * spec * lightColor; //Final vector for the specular light
+        
+    vec3 phong = (ambient + diffuse + specular) * objectColor; //Phong calculus with all the correct lights multiplication plus the object color
+    color = vec4(phong, 1.0f);
+} 

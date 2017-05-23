@@ -9,6 +9,10 @@
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
+#include "Model.h"
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 //Instantiate with Release x86!
 
@@ -216,6 +220,9 @@ int main(){
 	glUniform1i(glGetUniformLocation(shader.Program, "normalMap"), 1);
 	glUniform1i(glGetUniformLocation(shader.Program, "depthMap"), 2);
 
+	Shader modelShader = Shader("./src/textureVertex3d.vertexshader", "./src/textureFragment3d.fragmentshader");
+	Model ourModel("./src/ath/colchoneta.obj");
+
 	while (!glfwWindowShouldClose(window)){
 
 		//Deltatime calculation for each frame
@@ -238,6 +245,7 @@ int main(){
 		//Background color and z-buffer corrector
 		glClearColor(0.f, 0.f, 0.f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
 		
 
 		// Configure view/projection matrices
@@ -335,6 +343,22 @@ int main(){
 			PointLight.Draw();
 		}
 		
+		modelShader.USE();
+
+		GLint modelLocation = glGetUniformLocation(modelShader.Program, "model");
+		GLint viewLocation = glGetUniformLocation(modelShader.Program, "view");
+		GLint projLocation = glGetUniformLocation(modelShader.Program, "projection");
+
+		glUniformMatrix4fv(viewLocation, 1, GL_FALSE, value_ptr(viewP));
+		glUniformMatrix4fv(projLocation, 1, GL_FALSE, value_ptr(projectionP));
+
+		mat4 modelM;
+		modelM = translate(modelM, vec3(2.0f, -1.0f, -0.3f));
+		modelM = scale(modelM, vec3(0.02f, 0.02f, 0.02f));
+		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, value_ptr(modelM));
+
+		ourModel.Draw(modelShader, 0);
+
 
 
 		//Drawing the point light 2

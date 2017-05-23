@@ -1,21 +1,21 @@
 ﻿  main.cpp
-src\main.cpp(137): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-src\main.cpp(138): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-src\main.cpp(143): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
-src\main.cpp(144): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
-src\main.cpp(146): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-src\main.cpp(147): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-src\main.cpp(153): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-src\main.cpp(222): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
-src\main.cpp(306): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-src\main.cpp(307): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-src\main.cpp(318): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-src\main.cpp(319): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+src\main.cpp(141): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+src\main.cpp(142): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+src\main.cpp(147): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+src\main.cpp(148): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+src\main.cpp(150): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+src\main.cpp(151): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+src\main.cpp(157): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+src\main.cpp(229): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+src\main.cpp(314): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+src\main.cpp(315): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+src\main.cpp(326): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+src\main.cpp(327): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 libSOIL.lib(SOIL.obj) : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:ICF' specification
 LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
 LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  1 of 292 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+  1 of 787 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
@@ -44,9 +44,10 @@ Shader.obj : warning LNK4049: locally defined symbol ___glewCreateShader importe
 Shader.obj : warning LNK4049: locally defined symbol ___glewCompileShader imported
 Shader.obj : warning LNK4049: locally defined symbol ___glewGetShaderiv imported
 Shader.obj : warning LNK4049: locally defined symbol ___glewUseProgram imported
-libSOIL.lib(image_DXT.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'libSOIL.lib(image_DXT.obj)' or at 'C:\Users\Aniol\Desktop\Projects\ParallaxMapping\Practica1\Release\SOIL.pdb'; linking object as if no debug info
-libSOIL.lib(image_helper.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'libSOIL.lib(image_helper.obj)' or at 'C:\Users\Aniol\Desktop\Projects\ParallaxMapping\Practica1\Release\SOIL.pdb'; linking object as if no debug info
-libSOIL.lib(SOIL.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'libSOIL.lib(SOIL.obj)' or at 'C:\Users\Aniol\Desktop\Projects\ParallaxMapping\Practica1\Release\SOIL.pdb'; linking object as if no debug info
-libSOIL.lib(stb_image_aug.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'libSOIL.lib(stb_image_aug.obj)' or at 'C:\Users\Aniol\Desktop\Projects\ParallaxMapping\Practica1\Release\SOIL.pdb'; linking object as if no debug info
-glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Users\Aniol\Desktop\Projects\ParallaxMapping\Practica1\Release\vc120.pdb'; linking object as if no debug info
-  Proyecto.vcxproj -> C:\Users\Aniol\Desktop\Projects\ParallaxMapping\Practica1\Release\Practica1.exe
+libSOIL.lib(image_DXT.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'libSOIL.lib(image_DXT.obj)' or at 'C:\Users\mmolina\Documents\ParallaxMapping\Practica1\Release\SOIL.pdb'; linking object as if no debug info
+libSOIL.lib(image_helper.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'libSOIL.lib(image_helper.obj)' or at 'C:\Users\mmolina\Documents\ParallaxMapping\Practica1\Release\SOIL.pdb'; linking object as if no debug info
+libSOIL.lib(SOIL.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'libSOIL.lib(SOIL.obj)' or at 'C:\Users\mmolina\Documents\ParallaxMapping\Practica1\Release\SOIL.pdb'; linking object as if no debug info
+libSOIL.lib(stb_image_aug.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'libSOIL.lib(stb_image_aug.obj)' or at 'C:\Users\mmolina\Documents\ParallaxMapping\Practica1\Release\SOIL.pdb'; linking object as if no debug info
+glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Users\mmolina\Documents\ParallaxMapping\Practica1\Release\vc120.pdb'; linking object as if no debug info
+  Proyecto.vcxproj -> C:\Users\mmolina\Documents\ParallaxMapping\Practica1\Release\Practica1.exe
+  Proyecto.vcxproj -> C:\Users\mmolina\Documents\ParallaxMapping\Practica1\Release\Practica1.pdb (Full PDB)
